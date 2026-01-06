@@ -4,7 +4,7 @@
 
 ## Helpful links
 
-- [Course instruction](https://github.com/webprogramming260)
+- [Course instruction](https://github.com/webprogramming260/webprogramming)
 - [Canvas](https://byu.instructure.com)
 - [MDN](https://developer.mozilla.org)
 
@@ -15,7 +15,7 @@ Launching my AMI I initially put it on a private subnet. Even though it had a pu
 
 ## Caddy
 
-No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
+No problems worked just like it said in the [instruction](https://github.com/webprogramming260/webprogramming/blob/main/instruction/webServers/https/https.md).
 
 ## HTML
 
