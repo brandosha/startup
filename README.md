@@ -1,8 +1,8 @@
-# Your startup name here
+# Sync Spot – a new kind of dating app.
+
+Most dating apps aren't actually about dating, they are just glorified chat applications. Sync Spot, on the other hand, is all about coordinating real shared experiences. Whether it's going to a concert, hiking a trail, or playing pickleball, Sync Spot helps you find people who want to do the same things you do, at the same time and place. 
 
 [My Notes](notes.md)
-
-A brief description of the application here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 
 > [!NOTE]
