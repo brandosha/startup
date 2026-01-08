@@ -1,6 +1,6 @@
-# Sync Spot – a new kind of dating app.
+# Playmates – a new kind of dating app.
 
-Most dating apps aren't actually about dating, they are just glorified chat applications. Sync Spot, on the other hand, is all about coordinating real shared experiences. Whether it's going to a concert, hiking a trail, or playing pickleball, Sync Spot helps you find people who want to do the same things you do, at the same time and place. 
+The problem with so called "dating apps" is that they aren't actually about dating, they are just glorified social media apps. Playmates, on the other hand, is all about coordinating real shared experiences with people you want to meet. Whether it's going to a concert, hiking a trail, or playing pickleball, Playmates helps you meet up with people who want to do the same things you do, at the same time and place.
 
 [My Notes](notes.md)
 
