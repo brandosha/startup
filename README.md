@@ -1,6 +1,6 @@
-# Playmates – a new kind of dating app.
+# Neighborhood – see what's happening around you.
 
-The problem with so called "dating apps" is that they aren't actually about dating, they are just glorified social media apps. Playmates, on the other hand, is all about coordinating real shared experiences with people you want to meet. Whether it's going to a concert, hiking a trail, or playing pickleball, Playmates helps you meet up with people who want to do the same things you do, at the same time and place.
+Neighboorhood is a map-centric social platform. Users can post updates, events, and alerts tied to specific locations on the map. Whether it's a community event, a lost pet, or a local business promotion, Neighborhood helps residents stay informed and connected with what's happening right outside their door.
 
 [My Notes](notes.md)
 
@@ -15,45 +15,57 @@ The problem with so called "dating apps" is that they aren't actually about dati
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] Proper use of Markdown
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
+- [x] Description of how you will use each technology
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Have you ever been sitting at home and wondered what's going on nearby? Neighborhood is here to help! Our platform connects you with real-time updates, events, and alerts from your local community, all tied to specific locations on an interactive map.
 
 ### Design
 
-![Design image](placeholder.png)
+![Design image](neighborhood_app_mockup.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Her is an example diagram showing how two users might interact with the app.
 
 ```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
+    actor Bob
+    actor Alice
+    participant Server
+
+    Alice->>Server:Login Request
+    Server->>Alice:Cookie
+    Server<<-->>Alice:WebSocket Connection
+
+    Alice->>Server:Make Post
+    Bob->>Server:Request nearby posts
+    Server->>Bob:
+    Bob->>Server:Comment on Alice's post
+    Server-->>Alice:
 ```
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- User registration and login system
+- Interactive map interface
+- Location-based posts and alerts
+- Comments and likes on posts
+- Real-time updates via WebSockets
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Build the structure of the webpage
+- **CSS** - Good layout and styling that feels native and familiar
+- **React** - Build interactive UI components and manage application state
+- **Service** - ipgeolocation API to get user location for showing nearby posts
+- **DB/Login** - Storing user credentials and posts
+- **WebSocket** - Real-time updates for new posts, likes, and comments
 
 ## 🚀 AWS deliverable
 
