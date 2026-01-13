@@ -63,7 +63,12 @@ I am going to use the required technologies in the following ways.
 - **HTML** - Build the structure of the webpage
 - **CSS** - Good layout and styling that feels native and familiar
 - **React** - Build interactive UI components and manage application state
-- **Service** - ipgeolocation API to get user location for showing nearby posts
+- **Service** - Endpoints for:
+  - User registration and login
+  - Adding and deleting posts
+  - Searching for posts by location
+  - Adding and deleting comments and likes on posts
+  - Retrieving approximate location using [ipgeolocation](https://ipgeolocation.io/) API
 - **DB/Login** - Storing user credentials and posts
 - **WebSocket** - Real-time updates for new posts, likes, and comments
 
