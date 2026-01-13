@@ -60,7 +60,7 @@ sequenceDiagram
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Build the structure of the webpage
+- **HTML** - Build the structure of the webpage including embedding the map using [MapKit JS](https://developer.apple.com/documentation/mapkitjs)
 - **CSS** - Good layout and styling that feels native and familiar
 - **React** - Build interactive UI components and manage application state
 - **Service** - Endpoints for:
