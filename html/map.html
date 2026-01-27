@@ -3,10 +3,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Map – Neighborhood</title>
+
+  <style>
+    .nearby-post {
+      border: solid 1px #ccc;
+      padding: 0 24px;
+    }
+  </style>
 </head>
 <body>
   <div id="map">
     Map will go here.
+  </div>
+
+  <div>
+    <h1>
+      Hello, [Username]!
+    </h1>
+    <a href="/index.html">Log Out</a>
   </div>
 
   <div>
@@ -17,14 +31,24 @@
       <br>
       <label for="content">Content:</label>
       <textarea id="content" name="content" required></textarea>
+      <br>
+      <button type="submit">Post</button>
     </form>
   </div>
 
   <div>
     <h1>Nearby Posts</h1>
-    <div class="post">
+    <div class="nearby-post">
       <h2>Sample Post Title</h2>
-      <p>This is a sample post content to demonstrate the layout of nearby posts.</p>
+      <p>Here is something that's relevant to a nearby location.</p>
+      <button>
+        <i data-lucide="thumbs-up"></i>
+        Like
+      </button>
+      <form>
+        <input type="text" placeholder="Add a comment" required>
+        <button type="submit">Send</button>
+      </form>
     </div>
   </div>
 
@@ -33,5 +57,10 @@
     Made with ♥ by Brandon Lantz –
     <a href="https://github.com/brandosha/startup">Github</a>
   </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>
