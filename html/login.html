@@ -5,18 +5,28 @@
   <title>Log In – Neighborhood</title>
 </head>
 <body>
-  <h1>Log In to Neighborhood</h1>
+  <header>
+    <nav>
+      <a href="/index.html">About</a>
+      <a href="/map.html">Map</a>
+      <a href="/login.html">Log In</a>
+    </nav>
+  </header>
 
-  <!-- This is just so it goes to the map page. Authentication will be implemented later -->
-  <form action="/map.html" method="get"> 
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username">
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password">
-    <br>
-    <button type="submit">Log In</button>
-  </form>
+  <main>
+    <h1>Log In</h1>
+
+    <!-- This is just so it goes to the map page. Authentication will be implemented later -->
+    <form action="/map.html" method="get"> 
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username">
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
+      <br>
+      <button type="submit">Log In</button>
+    </form>
+  </main>
 
   <hr>
   <footer>

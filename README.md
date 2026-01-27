@@ -29,7 +29,7 @@ Have you ever been sitting at home and wondered what's going on nearby? Neighbor
 
 ![Design image](neighborhood_app_mockup.png)
 
-Her is an example diagram showing how two users might interact with the app.
+Here is an example diagram showing how two users might interact with the app.
 
 ```mermaid
 sequenceDiagram
@@ -82,8 +82,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - Three HTML pages
+  - `index.html` - Landing page with link to login page
+  - `login.html` - Login and registration page
+  - `map.html` - Main application page with map and posts
+- [x] **Proper HTML element usage** - I used `<header>`, `<nav>`, `<h1>`, `<p>`, and `<footer>` elements.
 - [ ] **Links** - I did not complete this part of the deliverable.
 - [ ] **Text** - I did not complete this part of the deliverable.
 - [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
