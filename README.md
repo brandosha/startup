@@ -90,7 +90,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **Links** - Nav bar on `index.html` and `login.html` links to all three pages. `map.html` links to `index.html` only because it will display a full screen map with no nav bar.
 - [x] **Text** - Mainly headers as well as the app description on the landing page.
 - [x] **3rd party API placeholder** - MapKit JS placeholder.
-- [ ] **Images** - I did not complete this part of the deliverable.
+- [x] **Images** - Map placeholder image.
 - [x] **Login placeholder** - Login page and username placeholder on the map page.
 - [x] **DB data placeholder** - Example post and comments.
 - [x] **WebSocket placeholder** - Same as DB data placeholder because WebSocket will be used to provide real-time updates to posts, comments, and likes.
