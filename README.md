@@ -83,17 +83,17 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] **HTML pages** - Three HTML pages
-  - `index.html` - Landing page with link to login page
+  - `index.html` - Landing page
   - `login.html` - Login and registration page
   - `map.html` - Main application page with map and posts
 - [x] **Proper HTML element usage** - I used `<header>`, `<nav>`, `<h1>`, `<p>`, and `<footer>` elements.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
+- [x] **Links** - Nav bar on `index.html` and `login.html` links to all three pages. `map.html` links to `index.html` only because it will display a full screen map with no nav bar.
+- [x] **Text** - Mainly headers as well as the app description on the landing page.
+- [x] **3rd party API placeholder** - MapKit JS placeholder.
 - [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **Login placeholder** - Login page and username placeholder on the map page.
+- [x] **DB data placeholder** - Example post and comments.
+- [x] **WebSocket placeholder** - Same as DB data placeholder because WebSocket will be used to provide real-time updates to posts, comments, and likes.
 
 ## 🚀 CSS deliverable
 
