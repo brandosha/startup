@@ -16,30 +16,38 @@
     </nav>
   </header>
 
-  <main class="flex-grow-1">
-    <h1>Log In</h1>
+  <main class="d-flex flex-column align-items-center justify-content-center gap-3">
+    <h1>Log in</h1>
 
     <!-- This is just so it goes to the map page. Authentication will be implemented later -->
-    <form action="/map.html" method="get"> 
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username">
-      <br>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password">
-      <br>
-      <button type="submit">Log In</button>
+    <form action="/map.html" method="get" class="center-vertical">
+      <div>
+        <label for="new-username" class="form-label">Username</label>
+        <input type="text" id="new-username" name="new-username" class="form-control">
+      </div>
+      
+      <div>
+        <label for="new-password" class="form-label">Password</label>
+        <input type="password" id="new-password" name="new-password" class="form-control">
+      </div>
+      
+      <button type="submit" class="btn btn-primary mt-3 w-100">Log In</button>
     </form>
 
-    <h2>Or Create an Account</h2>
+    <h2>or Create an Account</h2>
 
-    <form action="/map.html" method="get">
-      <label for="new-username">Username:</label>
-      <input type="text" id="new-username" name="new-username">
-      <br>
-      <label for="new-password">Password:</label>
-      <input type="password" id="new-password" name="new-password">
-      <br>
-      <button type="submit">Register</button>
+    <form action="/map.html" method="get" class="center-vertical">
+      <div>
+        <label for="new-username" class="form-label">Username</label>
+        <input type="text" id="new-username" name="new-username" class="form-control">
+      </div>
+      
+      <div>
+        <label for="new-password" class="form-label">Password</label>
+        <input type="password" id="new-password" name="new-password" class="form-control">
+      </div>
+      
+      <button type="submit" class="btn btn-primary mt-3 w-100">Register</button>
     </form>
   </main>
 
