@@ -67,11 +67,21 @@ footer {
   border-radius: 1em;
   margin: 1.5em 0;
   background-color: #00000020;
+  transition: background-color ease 0.3s;
+}
+
+.new-post:hover {
+  background-color: #a0a0a0a0;
 }
 
 .nearby-post {
   padding: 1em;
   border-radius: 1em;
   margin: 1.5em 0;
-  background-color: #ffffff80;
+  background-color: #ffffff60;
+  transition: background-color ease 0.3s;
+}
+
+.nearby-post:hover {
+  background-color: #ffffffa0;
 }
