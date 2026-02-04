@@ -58,6 +58,20 @@ footer {
 .map-sheet {
   background-color: #dddddd80;
   backdrop-filter: blur(6px);
-  padding: 1em;
+  padding: 2em;
   border-radius: 2em 2em 0 0;
+}
+
+.new-post {
+  padding: 1em;
+  border-radius: 1em;
+  margin: 1.5em 0;
+  background-color: #00000020;
+}
+
+.nearby-post {
+  padding: 1em;
+  border-radius: 1em;
+  margin: 1.5em 0;
+  background-color: #ffffff80;
 }
