@@ -62,7 +62,7 @@ footer {
   border-radius: 2em 2em 0 0;
 }
 
-.new-post {
+#new-post {
   padding: 1em;
   border-radius: 1em;
   margin: 1.5em 0;
@@ -70,7 +70,7 @@ footer {
   transition: background-color ease 0.3s;
 }
 
-.new-post:hover {
+#new-post:hover {
   background-color: #a0a0a0a0;
 }
 
