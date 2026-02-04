@@ -99,12 +99,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body** - I used flexbox to keep the header and footer at the top and bottom of the window
+- [x] **Navigation elements** - I used flexbox to arrange the `nav` links in a row with a gap between each.
+- [x] **Responsive to window resizing** - I didn't use any fixed widths, so the layout adjusts to different window sizes. I also styled the background images to cover the entire background without stretching.
+- [x] **Application elements** - I applied custom styles to `header`, `nav`, `footer`, `body`, and other elements by class and id selectors.
+- [x] **Application text content** - I added a custom font ([Lexend](https://fonts.google.com/specimen/Lexend)) from Google Fonts and applied it to the entire application.
+- [x] **Application images** - I used css `width`, `height`, and `object-fit` properties to ensure the background map placeholder fills the page properly.
 
 ## 🚀 React part 1: Routing deliverable
 
