@@ -5,14 +5,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
 import './app.css';
 import { Footer } from './components/Footer';
+import About from './about/About';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Header />
 
-
       <Routes>
+        <Route path="/" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
