@@ -27,8 +27,12 @@ function NotFound() {
     <>
       <Header />
 
-      <main className="container text-center">
-        <div className="mt-4">404: Return to sender. Address unknown.</div>
+      <main className="container d-flex flex-column align-items-center">
+        <div className='mt-4 p-2' style={{ maxWidth: '250px' }}>
+          <h1>404</h1>
+          <p>The page you are looking for does not exist.</p>
+        </div>
+        
       </main>
 
       <Footer />
