@@ -16,7 +16,7 @@ export default function Map() {
               <h1>
                 Hello, [Username]!
               </h1>
-              <NavLink to="/index.html">Log Out</NavLink>
+              <NavLink to="/">Log Out</NavLink>
             </div>
 
             <div id="new-post">
