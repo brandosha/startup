@@ -1,0 +1,34 @@
+{
+  "name": "startup",
+  "version": "1.0.0",
+  "description": "Neighboorhood is a map-centric social platform. Users can post updates, events, and alerts tied to specific locations on the map. Whether it's a community event, a lost pet, or a local business promotion, Neighborhood helps residents stay informed and connected with what's happening right outside their door.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandosha/startup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/brandosha/startup/issues"
+  },
+  "homepage": "https://github.com/brandosha/startup#readme",
+  "devDependencies": {
+    "@types/react-dom": "^19.2.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "react": "^19.2.4",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.0"
+  }
+}
