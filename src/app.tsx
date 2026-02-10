@@ -2,11 +2,12 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Header from './components/Header';
+import Header from './_components/Header';
 import './app.css';
-import { Footer } from './components/Footer';
+import { Footer } from './_components/Footer';
 import About from './about/About';
 import Login from './login/Login';
+import Map from './map/map';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/map" element={<Map />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
