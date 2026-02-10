@@ -110,9 +110,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - I elected to use vite with `tsx` instead of `jsx` because I prefer the type safety of TypeScript. It did require me to install the type definitions for ReactDOM.
+- [x] **Components** - I ported each page from the HTML files to a tsx component. I also created specific components for the header and footer that are shared across all pages except the map page which has no header. 
+- [x] **Router** - I changed every instance of `<a>` to a `<NavLink>` and set up the router to render the correct component for each path. I also included a `NotFound` component like the simon example.
 
 ## 🚀 React part 2: Reactivity deliverable
 
