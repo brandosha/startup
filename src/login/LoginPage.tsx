@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../_components/Header';
 import Footer from '../_components/Footer';
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <>
       <Header />

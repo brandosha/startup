@@ -9,7 +9,7 @@ import './bottom-sheet.css'
 import Footer from '../_components/Footer';
 import MapView from '../_components/MapView';
 
-export default function Map() {
+export default function MapPage() {
   return (
     <>
       <main>
