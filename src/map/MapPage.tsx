@@ -13,7 +13,17 @@ export default function MapPage() {
   return (
     <>
       <main>
-        <MapView className='map' />
+        <MapView
+          className='map'
+          markers={[
+            {
+              id: '1',
+              latitude: 40.248793100556114,
+              longitude: -111.64922954905643,
+              title: 'BYU'
+            }
+          ]}
+        />
 
         <BottomSheet 
           open 
