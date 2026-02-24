@@ -1,17 +1,28 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ThumbsUp } from 'lucide-react';
+
+import { BottomSheet } from 'react-spring-bottom-sheet'
+import 'react-spring-bottom-sheet/dist/style.css';
+import './bottom-sheet.css'
+
 import Footer from '../_components/Footer';
+import MapView from '../_components/MapView';
 
 export default function Map() {
   return (
     <>
       <main>
-        <img src="/map-placeholder.png" alt="Map Placeholder" className="map" />
+        <MapView className='map' />
 
-        <div className="map-sheet-container">
-          <div className="map-sheet-spacer"></div>
-          <div className="map-sheet">
+        <BottomSheet 
+          open 
+          blocking={false} 
+          snapPoints={(p) => [p.headerHeight + 100, p.maxHeight * 0.5, p.maxHeight * 0.95]}
+          defaultSnap={(p) => p.maxHeight * 0.5}
+          expandOnContentDrag={true}
+        >
+          <div className='map-sheet'>
             <div>
               <h1>
                 Hello, [Username]!
@@ -56,7 +67,7 @@ export default function Map() {
               </div>
             </div>
           </div>
-        </div>
+        </BottomSheet>
       </main>
 
       <Footer />

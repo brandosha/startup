@@ -9,7 +9,9 @@ html {
   flex-direction: column;
   font-size: 1.1rem;
   height: 100vh;
+}
 
+* {
   font-family: 'Lexend',system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 }
 
@@ -47,7 +49,6 @@ footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
 }
 
 .map-sheet-container {
@@ -63,11 +64,13 @@ footer {
   pointer-events: none;
 }
 
-.map-sheet {
-  background-color: #dddddd80;
+[data-rsbs-overlay] {
+  background: #dddddd80;
   backdrop-filter: blur(6px);
+}
+
+.map-sheet {
   padding: 2em;
-  border-radius: 2em 2em 0 0;
 }
 
 #new-post {

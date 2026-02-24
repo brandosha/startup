@@ -1,0 +1,4 @@
+[data-rsbs-overlay] {
+  background: #dddddd80;
+  backdrop-filter: blur(6px);
+}

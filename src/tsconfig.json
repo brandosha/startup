@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+  }
+}

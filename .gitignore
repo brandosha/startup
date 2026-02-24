@@ -1,4 +1,5 @@
 .DS_Store
 connect.sh
+.env
 
 node_modules/
