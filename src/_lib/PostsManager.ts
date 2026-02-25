@@ -57,6 +57,8 @@ class PostsManager extends StateManager {
     const newPost = { ...post, id, createdDate, expirationDate };
     this.posts.push(newPost);
     this.dispatchChange();
+
+    return newPost;
   }
 
   get(id: string) {

@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { use, useEffect, useMemo, useState } from 'react';
 import { NavLink, useSearchParams } from 'react-router-dom';
-import { ThumbsUp } from 'lucide-react';
+import { ThumbsUp, XIcon } from 'lucide-react';
 
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css';
@@ -32,7 +32,7 @@ export default function MapPage() {
   const centerMapOnPoint = (coordinate: { latitude: number; longitude: number }, zoom = 0.02) => {
     setMapRegion(prev => ({
       center: {
-        latitude: coordinate.latitude - (zoom * 0.2), // adjust center to account for bottom sheet
+        latitude: coordinate.latitude - (zoom * 0.3), // adjust center to account for bottom sheet
         longitude: coordinate.longitude,
       },
       span: {
@@ -95,10 +95,27 @@ export default function MapPage() {
     <p>Tap on a marker to see details, or tap on the map to create a new post.</p>
     {allPosts.map(post => <PostDetails key={post.id} post={post} />)}
   </div>;
+
   if (newPostMarker) {
-    sheetContent = <NewPost />;
-  } else if (postId) {
-    sheetContent = <PostDetails post={posts.get(postId)!} />;
+    sheetContent = (
+      <div>
+        <TopCloseButton onClick={() => setNewPostMarker(null)} />
+        <NewPostForm
+          coordinates={newPostMarker}
+          onPost={(post) => {
+            setNewPostMarker(null);
+            setSearchParams({ post: post.id });
+          }}
+        />
+      </div>
+    );
+  } else if (selectedPost) {
+    sheetContent = (
+      <div>
+        <TopCloseButton onClick={() => setSearchParams({})} />
+        <PostDetails post={selectedPost} />
+      </div>
+    );
   }
 
   return (
@@ -130,18 +147,71 @@ export default function MapPage() {
   )
 }
 
-function NewPost() {
+function TopCloseButton({ onClick }: { onClick: () => void }) {
+  return (
+    <div className='fixed-top p-3 d-flex justify-content-end w-100'>
+      <button
+        className="btn btn-secondary p-0 rounded-circle d-flex align-items-center justify-content-center"
+        style={{ width: 40, height: 40 }}
+        onClick={onClick}
+      >
+        <XIcon size={24} />
+      </button>
+    </div>
+  );
+}
+
+interface NewPostFormProps {
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
+  onPost: (post: Post) => void;
+}
+
+function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
+  const posts = usePosts();
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
   return (
     <div id="new-post">
-      <form>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+
+        const newPost = posts.create({
+          title,
+          content,
+          coordinates,
+        });
+        onPost(newPost);
+      }}>
         <h1>New Post</h1>
         <label htmlFor="title" className="form-label">Title</label>
-        <input type="text" id="title" name="title" className="form-control" required />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          className="form-control"
+          required
+          value={title}
+          onChange={(e) => setTitle(e.target.value)} 
+        />
         <br />
         <label htmlFor="content" className="form-label">Content</label>
-        <textarea id="content" name="content" className="form-control" required></textarea>
+        <textarea
+          id="content"
+          name="content"
+          className="form-control"
+          required
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        ></textarea>
         <br />
-        <button type="submit" className="btn btn-primary w-100">Post</button>
+        <button type="submit" className="btn btn-primary w-100">
+          Post
+        </button>
       </form>
     </div>
   )
