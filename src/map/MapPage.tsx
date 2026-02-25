@@ -9,6 +9,7 @@ import './bottom-sheet.css'
 import Footer from '../_components/Footer';
 import MapView, { Marker } from '../_components/MapView';
 import { Post, usePosts } from '../_lib/PostsManager';
+import IfAuth from '../_components/IfAuth';
 
 export default function MapPage() {
   const posts = usePosts();
@@ -84,15 +85,24 @@ export default function MapPage() {
   }, [newPostMarker]);
 
   let sheetContent = <div>
-    <div>
-      <h1>
-        Hello, [Username]!
-      </h1>
-      <NavLink to="/">Log Out</NavLink>
-    </div>
+    <IfAuth
+      content={(auth) => (
+        <div>
+          <h1>
+            Hello, {auth.currentUser()?.username}!
+          </h1>
+          <NavLink to="/">Log Out</NavLink>
+          <p>Tap on a marker to see details, or tap on the map to create a new post.</p>
+        </div>
+      )}
+      noAuthContent={(
+        <div>
+          <p>Tap on a marker to see details, or <NavLink to="/login">log in</NavLink> to create a new post.</p>
+        </div>
+      )}
+    />
 
-    <h1>Nearby Posts</h1>
-    <p>Tap on a marker to see details, or tap on the map to create a new post.</p>
+    <h2>Nearby Posts</h2>
     {allPosts.map(post => <PostDetails key={post.id} post={post} />)}
   </div>;
 
