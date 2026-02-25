@@ -46,7 +46,7 @@ export default function MapView(props: MapProps) {
   }, [props.onPress, props.onMarkerPress]);
 
   const [mapkit, setMapkit] = useState<MapKit | null>(null);
-  React.useEffect(() => {
+  useEffect(() => {
     _mapkit.then((mk) => {
       setMapkit(mk);
     });
@@ -54,7 +54,7 @@ export default function MapView(props: MapProps) {
 
   const [mkMap, setMkMap] = useState<Map | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!mapRef.current) return;
     if (!mapkit) return;
 
@@ -90,7 +90,7 @@ export default function MapView(props: MapProps) {
     setMkMap(map);
   }, [mapkit]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!mkMap) return;
 
     _mapkit.then((mapkit) => {
@@ -112,6 +112,24 @@ export default function MapView(props: MapProps) {
       });
     });
   }, [props.markers, mkMap]);
+
+  useEffect(() => {
+    if (!mapkit) return;
+    if (!mkMap) return;
+    if (!props.region) return;
+
+    const newRegion = new mapkit.CoordinateRegion(
+      new mapkit.Coordinate(
+        props.region.center.latitude,
+        props.region.center.longitude
+      ),
+      new mapkit.CoordinateSpan(
+        props.region.span.latitudeDelta,
+        props.region.span.longitudeDelta
+      )
+    );
+    mkMap.setRegionAnimated(newRegion);
+  }, [props.region, mkMap]);
 
   return <div ref={mapRef} className={props.className} />;
 }
