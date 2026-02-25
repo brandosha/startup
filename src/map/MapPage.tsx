@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ThumbsUp } from 'lucide-react';
 
@@ -7,22 +7,49 @@ import 'react-spring-bottom-sheet/dist/style.css';
 import './bottom-sheet.css'
 
 import Footer from '../_components/Footer';
-import MapView from '../_components/MapView';
+import MapView, { Marker } from '../_components/MapView';
 
 export default function MapPage() {
+
+  const [newPostMarker, setNewPostMarker] = useState<Marker | null>(null);
+
+  const mapPressEvent = (coordinate: { latitude: number; longitude: number }) => {
+    console.log("Map pressed at coordinate:", coordinate);
+    setNewPostMarker({
+      id: 'NEW_POST',
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude,
+      title: 'New Post',
+      color: '#008743',
+    });
+  };
+
+  const markers = useMemo(() => {
+    let markers = [];
+    if (newPostMarker) {
+      markers.push(newPostMarker);
+    }
+
+    markers = markers.concat([
+      {
+        id: '1',
+        latitude: 40.248793100556114,
+        longitude: -111.64922954905643,
+        title: 'BYU',
+        color: '#247cff'
+      }
+    ]);
+
+    return markers;
+  }, [newPostMarker]);
+
   return (
     <>
       <main>
         <MapView
           className='map'
-          markers={[
-            {
-              id: '1',
-              latitude: 40.248793100556114,
-              longitude: -111.64922954905643,
-              title: 'BYU'
-            }
-          ]}
+          markers={markers}
+          onPress={mapPressEvent}
         />
 
         <BottomSheet 

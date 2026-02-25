@@ -1,18 +1,21 @@
-import React, { useState, useRef } from "react";
-import { load, Map, MapKit } from "@apple/mapkit-loader";
+import React, { useState, useRef, useEffect } from "react";
+import { load, Map, MapEvent, MapKit } from "@apple/mapkit-loader";
 
 const _mapkit = load({
   token: import.meta.env.VITE_MAPKIT_JS_TOKEN,
   libraries: ["full-map", "user-location"],
 });
 
+export interface Marker {
+  id: string;
+  latitude: number;
+  longitude: number;
+  title: string;
+  color?: string;
+}
+
 interface MapProps {
-  markers?: {
-    id: string;
-    latitude: number;
-    longitude: number;
-    title: string;
-  }[];
+  markers?: Marker[];
 
   region?: {
     center: {
@@ -26,10 +29,21 @@ interface MapProps {
   }
 
   className?: string;
+  onPress?: (coordinate: { latitude: number; longitude: number }) => void;
+  onMarkerPress?: (marker: Marker) => void;
 }
 
 export default function MapView(props: MapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
+  
+  const eventsRef = useRef({
+    onPress: props.onPress,
+    onMarkerPress: props.onMarkerPress,
+  })
+  useEffect(() => {
+    eventsRef.current.onPress = props.onPress;
+    eventsRef.current.onMarkerPress = props.onMarkerPress;
+  }, [props.onPress, props.onMarkerPress]);
 
   const [mapkit, setMapkit] = useState<MapKit | null>(null);
   React.useEffect(() => {
@@ -63,6 +77,16 @@ export default function MapView(props: MapProps) {
       region: startRegion,
       showsUserLocationControl: true,
     })
+    map.addEventListener("single-tap", (event: MapEvent) => {
+      console.log("Map single-tap", event);
+      const point = event.pointOnPage!;
+      const coordinate = map.convertPointOnPageToCoordinate(point);
+      eventsRef.current.onPress?.({
+        latitude: coordinate.latitude,
+        longitude: coordinate.longitude,
+      });
+    });
+
     setMkMap(map);
   }, [mapkit]);
 
@@ -77,6 +101,13 @@ export default function MapView(props: MapProps) {
           new mapkit.Coordinate(pin.latitude, pin.longitude)
         );
         annotation.title = pin.title;
+        if (pin.color) {
+          annotation.color = pin.color;
+        }
+
+        annotation.addEventListener("select", () => {
+          eventsRef.current.onMarkerPress?.(pin);
+        });
         mkMap.addAnnotation(annotation);
       });
     });
