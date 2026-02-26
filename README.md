@@ -118,8 +118,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out**
+  - I implemented reactive components for registration/login, the interactive map, posts, and comments.
+  - I mocked out database data with `localStorage` plus some hardcoded example posts and comments.
+  - I mocked out WebSocket real-time updates with `setTimeout` that responds to every comment after 1.5 seconds.
+- [x] **Hooks**
+  - Using `useState` and `useEffect` I created custom hooks `useAuth`, `usePosts`, and `useComments` to manage state that's shared across the app. (see [notes.md](notes.md))
 
 ## 🚀 Service deliverable
 
