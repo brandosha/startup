@@ -13,15 +13,13 @@ export default function PostDetails({ post }: { post: Post}) {
 
   return (
     <div className="nearby-post">
-      <UsernameBadge username={post.username} date={post.createdDate} />
-      <h2>{post.title}</h2>
-      <p>{post.content}</p>
-      <button className="btn btn-primary">
-        <ThumbsUp size={20} />
-        <span className='ms-2'>
-          Like
-        </span>
-      </button>
+      <div className="mb-4">
+        <UsernameBadge username={post.username} date={post.createdDate} />
+        <h2>{post.title}</h2>
+        <p>{post.content}</p>
+      </div>
+
+      <h4>Comments ({postComments.length})</h4>
 
       <IfAuth
         content={(auth) => (
@@ -55,9 +53,9 @@ export default function PostDetails({ post }: { post: Post}) {
         )}
       />
       
-      <div className="mt-3">
+      <div className="mt-2">
         {postComments.map((comment, i) => (
-          <div key={comment.createdDate.getTime()} className={"p-2 " + (i !== 0 ? "border-top" : "")}>
+          <div key={comment.createdDate.getTime()} className={"p-3 " + (i !== 0 ? "border-top" : "")}>
             <UsernameBadge username={comment.username} date={comment.createdDate} />
             <p className="m-0 px-2">{comment.content}</p>
           </div>
