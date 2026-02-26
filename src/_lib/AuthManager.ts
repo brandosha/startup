@@ -87,14 +87,14 @@ export class AuthManager extends StateManager {
 
   dispatchChange(): void {
     super.dispatchChange();
-    // localStorage.setItem("startup_users", JSON.stringify(this.users));
-    // localStorage.setItem("startup_sessions", JSON.stringify(this.sessions));
+    localStorage.setItem("startup_users", JSON.stringify(this.users));
+    localStorage.setItem("startup_sessions", JSON.stringify(this.sessions));
 
-    // if (this.curSession) {
-    //   localStorage.setItem("startup_curSession", this.curSession);
-    // } else {
-    //   localStorage.removeItem("startup_curSession");
-    // }
+    if (this.curSession) {
+      localStorage.setItem("startup_curSession", this.curSession);
+    } else {
+      localStorage.removeItem("startup_curSession");
+    }
   }
 }
 

@@ -89,15 +89,17 @@ export default function MapPage() {
     <IfAuth
       content={(auth) => (
         <div>
-          <h1>
-            Hello, {auth.currentUser()?.username}!
-          </h1>
-          
-          <button className="btn btn-link" onClick={() => {
-            auth.logout();
-          }}>
-            Log Out
-          </button>
+          <div className='d-flex justify-content-between'>
+            <h1>
+              Hello, {auth.currentUser()?.username}!
+            </h1>
+
+            <button className="btn btn-link" onClick={() => {
+              auth.logout();
+            }}>
+              Log Out
+            </button>
+          </div>
 
           <p>Tap on a marker to see details, or tap on the map to create a new post.</p>
         </div>

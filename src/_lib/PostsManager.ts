@@ -13,8 +13,8 @@ export interface Post {
   expirationDate: Date;
 }
 
-const testPosts: Post[] = [
-  {
+const testPosts: { [id: string]: Post } = {
+  '1': {
     id: '1',
     title: 'Lost Dog',
     content: 'My dog ran away, last seen near the park.',
@@ -25,7 +25,7 @@ const testPosts: Post[] = [
     createdDate: new Date(),
     expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 24 hours
   },
-  {
+  '2': {
     id: '2',
     title: 'Free Food',
     content: 'Free pizza until 7pm',
@@ -36,10 +36,10 @@ const testPosts: Post[] = [
     createdDate: new Date(),
     expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 24 hours
   }
-];
+};
 
 class PostsManager extends StateManager {
-  private posts: Post[] = testPosts;
+  private posts: { [id: string]: Post } = testPosts;
 
   constructor() {
     super();
@@ -55,23 +55,23 @@ class PostsManager extends StateManager {
     const createdDate = new Date();
     const expirationDate = new Date(createdDate.getTime() + 1000 * 60 * 60 * 24); // 24 hours from creation
     const newPost = { ...post, id, createdDate, expirationDate };
-    this.posts.push(newPost);
+    this.posts[id] = newPost;
     this.dispatchChange();
 
     return newPost;
   }
 
   get(id: string) {
-    return this.posts.find(post => post.id === id);
+    return this.posts[id];
   }
 
   getAll() {
-    return this.posts;
+    return Object.values(this.posts);
   }
 
   dispatchChange(): void {
     super.dispatchChange();
-    // localStorage.setItem("startup_posts", JSON.stringify(this.posts));
+    localStorage.setItem("startup_posts", JSON.stringify(this.posts));
   }
 }
 
