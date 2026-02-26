@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { StateManager } from "./StateManager";
 
+import { auth } from "./AuthManager";
+
 export interface Post {
   id: string;
+  username: string;
   title: string;
   content: string;
   coordinates: {
@@ -16,6 +19,7 @@ export interface Post {
 const testPosts: { [id: string]: Post } = {
   '1': {
     id: '1',
+    username: 'alice',
     title: 'Lost Dog',
     content: 'My dog ran away, last seen near the park.',
     coordinates: {
@@ -27,6 +31,7 @@ const testPosts: { [id: string]: Post } = {
   },
   '2': {
     id: '2',
+    username: 'bob',
     title: 'Free Food',
     content: 'Free pizza until 7pm',
     coordinates: {
@@ -50,11 +55,21 @@ class PostsManager extends StateManager {
     }
   }
 
-  create(post: Omit<Post, "id" | "createdDate" | "expirationDate">) {
+  create(post: Omit<Post, "id" | "createdDate" | "username">) {
+    const user = auth.currentUser();
+    if (!user) {
+      throw new Error("User must be logged in to create a post");
+    }
+
     const id = post.title.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).slice(2, 9);
     const createdDate = new Date();
-    const expirationDate = new Date(createdDate.getTime() + 1000 * 60 * 60 * 24); // 24 hours from creation
-    const newPost = { ...post, id, createdDate, expirationDate };
+    const newPost = {
+      ...post,
+      id,
+      username: user.username,
+      createdDate,
+    };
+
     this.posts[id] = newPost;
     this.dispatchChange();
 

@@ -89,19 +89,19 @@ export default function MapPage() {
     <IfAuth
       content={(auth) => (
         <div>
-          <div className='d-flex justify-content-between'>
+          <div className='d-flex justify-content-between align-items-center mb-2'>
             <h1>
               Hello, {auth.currentUser()?.username}!
             </h1>
 
-            <button className="btn btn-link" onClick={() => {
+            <button className="btn btn-sm btn-danger" onClick={() => {
               auth.logout();
             }}>
               Log Out
             </button>
           </div>
 
-          <p>Tap on a marker to see details, or tap on the map to create a new post.</p>
+          <p>Tap on a marker to see details, or tap anywhere on the map to create a new post.</p>
         </div>
       )}
       noAuthContent={(
@@ -205,6 +205,7 @@ function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
               title,
               content,
               coordinates,
+              expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 24 hours
             });
             onPost(newPost);
           }}>
@@ -248,13 +249,17 @@ function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
         </div>
       )}
     />
-    
   )
 }
 
 function PostDetails({ post }: { post: Post}) {
   return (
     <div className="nearby-post">
+      <h5>
+        <span className='badge text-bg-secondary'>
+          {post.username}
+        </span>
+      </h5>
       <h2>{post.title}</h2>
       <p>{post.content}</p>
       <button className="btn btn-primary">
