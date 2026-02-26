@@ -1,4 +1,4 @@
-import React, { use, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NavLink, useSearchParams } from 'react-router-dom';
 import { ThumbsUp, XIcon } from 'lucide-react';
 
@@ -8,8 +8,11 @@ import './bottom-sheet.css'
 
 import Footer from '../_components/Footer';
 import MapView, { Marker } from '../_components/MapView';
-import { Post, usePosts } from '../_lib/PostsManager';
+import { usePosts } from '../_lib/PostsManager';
 import IfAuth from '../_components/IfAuth';
+import NewPostForm from '../_components/NewPostForm';
+import PostDetails from '../_components/PostDetails';
+import PostCard from '../_components/PostCard';
 
 export default function MapPage() {
   const posts = usePosts();
@@ -112,7 +115,7 @@ export default function MapPage() {
     />
 
     <h2>Nearby Posts</h2>
-    {allPosts.map(post => <PostDetails key={post.id} post={post} />)}
+    {allPosts.map(post => <PostCard key={post.id} post={post} />)}
   </div>;
 
   if (newPostMarker) {
@@ -179,105 +182,3 @@ function TopCloseButton({ onClick }: { onClick: () => void }) {
     </div>
   );
 }
-
-interface NewPostFormProps {
-  coordinates: {
-    latitude: number;
-    longitude: number;
-  };
-  onPost: (post: Post) => void;
-}
-
-function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
-  const posts = usePosts();
-
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  return (
-    <IfAuth
-      content={(auth) => (
-        <div id="new-post">
-          <form onSubmit={(e) => {
-            e.preventDefault();
-
-            const newPost = posts.create({
-              title,
-              content,
-              coordinates,
-              expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 24 hours
-            });
-            onPost(newPost);
-          }}>
-            <h1>New Post</h1>
-            <label htmlFor="title" className="form-label">Title</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              className="form-control"
-              required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)} 
-            />
-            <br />
-            <label htmlFor="content" className="form-label">Content</label>
-            <textarea
-              id="content"
-              name="content"
-              className="form-control"
-              required
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            ></textarea>
-            <br />
-            <button type="submit" className="btn btn-primary w-100">
-              Post
-            </button>
-          </form>
-        </div>
-      )}
-      noAuthContent={(
-        <div>
-          <h1>New Post</h1>
-          <p>You must be logged in to create a post.</p>
-          <div className="d-flex justify-content-center p-2">
-            <NavLink to="/login" className="btn btn-primary">
-              Log In
-            </NavLink>
-          </div>
-        </div>
-      )}
-    />
-  )
-}
-
-function PostDetails({ post }: { post: Post}) {
-  return (
-    <div className="nearby-post">
-      <h5>
-        <span className='badge text-bg-secondary'>
-          {post.username}
-        </span>
-      </h5>
-      <h2>{post.title}</h2>
-      <p>{post.content}</p>
-      <button className="btn btn-primary">
-        <ThumbsUp size={20} />
-        <span className='ms-2'>
-          Like
-        </span>
-      </button>
-      <form className="mt-3">
-        <div className="row g-3">
-          <div className="col">
-            <input type="text" className="form-control" placeholder="Add a comment" required />
-          </div>
-          <div className="col-auto">
-            <button type="submit" className="btn btn-primary">Send</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  );
-};
