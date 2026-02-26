@@ -16,6 +16,17 @@ export default function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [expirationDate, setExpirationDate] = useState(new Date(Date.now() + 1000 * 60 * 60 * 24)); // default to 24 hours from now
+
+  const expirationOptions = [
+    { label: '1 Hour', value: 1000 * 60 * 60 },
+    { label: '3 Hours', value: 1000 * 60 * 60 * 3 },
+    { label: '6 Hours', value: 1000 * 60 * 60 * 6 },
+    { label: '12 Hours', value: 1000 * 60 * 60 * 12 },
+    { label: '24 Hours', value: 1000 * 60 * 60 * 24 },
+    { label: '3 Days', value: 1000 * 60 * 60 * 24 * 3 },
+    { label: '7 Days', value: 1000 * 60 * 60 * 24 * 7 },
+  ]
 
   return (
     <IfAuth
@@ -28,7 +39,7 @@ export default function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
               title,
               content,
               coordinates,
-              expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 24 hours
+              expirationDate,
             });
             onPost(newPost);
           }}>
@@ -54,6 +65,28 @@ export default function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
               onChange={(e) => setContent(e.target.value)}
             ></textarea>
             <br />
+            <label htmlFor="expiration" className="form-label">Expiration Time</label>
+            <input
+              type="datetime-local"
+              id="expiration"
+              name="expiration"
+              className="form-control"
+              value={expirationDate.toISOString().slice(0, 16)}
+              onChange={(e) => setExpirationDate(new Date(e.target.value))}
+            />
+
+            <div className="mt-2 mb-4 d-flex flex-wrap gap-1">
+              {expirationOptions.map(option => (
+                <button
+                  type="button"
+                  className="btn btn-outline-dark small"
+                  onClick={() => setExpirationDate(new Date(Date.now() + option.value))}
+              >
+                {option.label}
+              </button>
+              ))}
+            </div>
+
             <button type="submit" className="btn btn-primary w-100">
               Post
             </button>

@@ -1,4 +1,3 @@
-import { ThumbsUp } from "lucide-react";
 import { Post } from "../_lib/PostsManager";
 import { useComments } from "../_lib/CommentsManager";
 import { useState } from "react";
