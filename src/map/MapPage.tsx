@@ -67,6 +67,7 @@ export default function MapPage() {
       color: '#008743',
     }
     setNewPostMarker(newMarker);
+    setSearchParams({});
   };
 
   const markers = useMemo(() => {
@@ -91,7 +92,13 @@ export default function MapPage() {
           <h1>
             Hello, {auth.currentUser()?.username}!
           </h1>
-          <NavLink to="/">Log Out</NavLink>
+          
+          <button className="btn btn-link" onClick={() => {
+            auth.logout();
+          }}>
+            Log Out
+          </button>
+
           <p>Tap on a marker to see details, or tap on the map to create a new post.</p>
         </div>
       )}
@@ -186,44 +193,60 @@ function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
   const [content, setContent] = useState('');
 
   return (
-    <div id="new-post">
-      <form onSubmit={(e) => {
-        e.preventDefault();
+    <IfAuth
+      content={(auth) => (
+        <div id="new-post">
+          <form onSubmit={(e) => {
+            e.preventDefault();
 
-        const newPost = posts.create({
-          title,
-          content,
-          coordinates,
-        });
-        onPost(newPost);
-      }}>
-        <h1>New Post</h1>
-        <label htmlFor="title" className="form-label">Title</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          className="form-control"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)} 
-        />
-        <br />
-        <label htmlFor="content" className="form-label">Content</label>
-        <textarea
-          id="content"
-          name="content"
-          className="form-control"
-          required
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        ></textarea>
-        <br />
-        <button type="submit" className="btn btn-primary w-100">
-          Post
-        </button>
-      </form>
-    </div>
+            const newPost = posts.create({
+              title,
+              content,
+              coordinates,
+            });
+            onPost(newPost);
+          }}>
+            <h1>New Post</h1>
+            <label htmlFor="title" className="form-label">Title</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              className="form-control"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)} 
+            />
+            <br />
+            <label htmlFor="content" className="form-label">Content</label>
+            <textarea
+              id="content"
+              name="content"
+              className="form-control"
+              required
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></textarea>
+            <br />
+            <button type="submit" className="btn btn-primary w-100">
+              Post
+            </button>
+          </form>
+        </div>
+      )}
+      noAuthContent={(
+        <div>
+          <h1>New Post</h1>
+          <p>You must be logged in to create a post.</p>
+          <div className="d-flex justify-content-center p-2">
+            <NavLink to="/login" className="btn btn-primary">
+              Log In
+            </NavLink>
+          </div>
+        </div>
+      )}
+    />
+    
   )
 }
 
