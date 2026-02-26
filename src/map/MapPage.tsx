@@ -13,6 +13,7 @@ import IfAuth from '../_components/IfAuth';
 import NewPostForm from '../_components/NewPostForm';
 import PostDetails from '../_components/PostDetails';
 import PostCard from '../_components/PostCard';
+import { getIpLocation, storedMapRegion } from '../_lib/utils';
 
 export default function MapPage() {
   const posts = usePosts();
@@ -22,7 +23,7 @@ export default function MapPage() {
   const postId = searchParams.get("post");
   const selectedPost = postId ? posts.get(postId) : null;
 
-  const [mapRegion, setMapRegion] = useState({
+  const [mapRegion, setMapRegion] = useState(storedMapRegion.get() || {
     center: {
       latitude: 40.2495,
       longitude: -111.648,
@@ -33,8 +34,25 @@ export default function MapPage() {
     },
   });
 
+  useEffect(() => {
+    getIpLocation().then((loc) => {
+      const dist = Math.sqrt(
+        Math.pow(loc.latitude - mapRegion.center.latitude, 2) +
+        Math.pow(loc.longitude - mapRegion.center.longitude, 2)
+      );
+
+      // If the user's location is close to the current map center, don't recenter the map.
+      if (dist < 5) return;
+
+      centerMapOnPoint({
+        latitude: loc.latitude,
+        longitude: loc.longitude,
+      }, 2.5);
+    })
+  }, []);
+
   const centerMapOnPoint = (coordinate: { latitude: number; longitude: number }, zoom = 0.02) => {
-    setMapRegion(prev => ({
+    const region = {
       center: {
         latitude: coordinate.latitude - (zoom * 0.3), // adjust center to account for bottom sheet
         longitude: coordinate.longitude,
@@ -43,7 +61,9 @@ export default function MapPage() {
         latitudeDelta: zoom,
         longitudeDelta: zoom,
       },
-    }));
+    };
+    setMapRegion(region);
+    storedMapRegion.set(region);
   }
 
   useEffect(() => {
@@ -104,12 +124,12 @@ export default function MapPage() {
             </button>
           </div>
 
-          <p>Tap on a marker to see details, or tap anywhere on the map to create a new post.</p>
+          <p>Select a post or marker to see details, or tap anywhere on the map to create a new post.</p>
         </div>
       )}
       noAuthContent={(
         <div>
-          <p>Tap on a marker to see details, or <NavLink to="/login">log in</NavLink> to create a new post.</p>
+          <p>Select a post or marker to see details. To create a new post you will need to <NavLink to="/login">log in</NavLink>.</p>
         </div>
       )}
     />
@@ -145,10 +165,11 @@ export default function MapPage() {
       <main>
         <MapView
           className='map'
+          region={mapRegion}
           markers={markers}
           onPress={mapPressEvent}
           onMarkerPress={mapMarkerPressEvent}
-          region={mapRegion}
+          onRegionChange={storedMapRegion.set}
         />
 
         <BottomSheet 

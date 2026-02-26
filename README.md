@@ -122,6 +122,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
   - I implemented reactive components for registration/login, the interactive map, posts, and comments.
   - I mocked out database data with `localStorage` plus some hardcoded example posts and comments.
   - I mocked out WebSocket real-time updates with `setTimeout` that responds to every comment after 1.5 seconds.
+  - I mocked out the IP location API call with a hardcoded response that I got from the actual API.
 - [x] **Hooks**
   - Using `useState` and `useEffect` I created custom hooks `useAuth`, `usePosts`, and `useComments` to manage state that's shared across the app. (see [notes.md](notes.md))
 

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { load, Map, MapEvent, MapKit } from "@apple/mapkit-loader";
+import { MapRegion } from "../_lib/utils";
 
 const _mapkit = load({
   token: import.meta.env.VITE_MAPKIT_JS_TOKEN,
@@ -16,21 +17,13 @@ export interface Marker {
 
 interface MapProps {
   markers?: Marker[];
-
-  region?: {
-    center: {
-      latitude: number;
-      longitude: number;
-    };
-    span: {
-      latitudeDelta: number;
-      longitudeDelta: number;
-    };
-  }
+  region?: MapRegion;
 
   className?: string;
+  
   onPress?: (coordinate: { latitude: number; longitude: number }) => void;
   onMarkerPress?: (marker: Marker) => void;
+  onRegionChange?: (region: MapRegion) => void;
 }
 
 export default function MapView(props: MapProps) {
@@ -39,11 +32,13 @@ export default function MapView(props: MapProps) {
   const eventsRef = useRef({
     onPress: props.onPress,
     onMarkerPress: props.onMarkerPress,
+    onRegionChange: props.onRegionChange,
   })
   useEffect(() => {
     eventsRef.current.onPress = props.onPress;
     eventsRef.current.onMarkerPress = props.onMarkerPress;
-  }, [props.onPress, props.onMarkerPress]);
+    eventsRef.current.onRegionChange = props.onRegionChange;
+  }, [props.onPress, props.onMarkerPress, props.onRegionChange]);
 
   const [mapkit, setMapkit] = useState<MapKit | null>(null);
   useEffect(() => {
@@ -84,6 +79,19 @@ export default function MapView(props: MapProps) {
       eventsRef.current.onPress?.({
         latitude: coordinate.latitude,
         longitude: coordinate.longitude,
+      });
+    });
+    map.addEventListener("region-change-end", () => {
+      const region = map.region;
+      eventsRef.current.onRegionChange?.({
+        center: {
+          latitude: region.center.latitude,
+          longitude: region.center.longitude,
+        },
+        span: {
+          latitudeDelta: region.span.latitudeDelta,
+          longitudeDelta: region.span.longitudeDelta,
+        },
       });
     });
 
