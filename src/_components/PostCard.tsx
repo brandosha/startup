@@ -1,6 +1,6 @@
-import { ThumbsUp } from "lucide-react";
 import { Post } from "../_lib/PostsManager";
 import { useNavigate, useNavigation, useSearchParams } from "react-router-dom";
+import UsernameBadge from "./UsernameBadge";
 
 export default function PostCard({ post }: { post: Post}) {
   const navigate = useNavigate();
@@ -20,11 +20,7 @@ export default function PostCard({ post }: { post: Post}) {
       }
     }}>
       <div className="nearby-post">
-        <h5>
-          <span className='badge text-bg-secondary'>
-            {post.username}
-          </span>
-        </h5>
+        <UsernameBadge username={post.username} date={post.createdDate} />
         <h2>{post.title}</h2>
         <p>{post.content}</p>
       </div>

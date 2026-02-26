@@ -173,7 +173,7 @@ function TopCloseButton({ onClick }: { onClick: () => void }) {
   return (
     <div className='fixed-top p-3 d-flex justify-content-end w-100'>
       <button
-        className="btn btn-secondary p-0 rounded-circle d-flex align-items-center justify-content-center"
+        className="btn btn-secondary p-0 rounded-circle d-flex align-items-center justify-content-center shadow"
         style={{ width: 40, height: 40 }}
         onClick={onClick}
       >

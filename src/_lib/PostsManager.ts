@@ -52,6 +52,10 @@ class PostsManager extends StateManager {
     const storedPosts = localStorage.getItem("startup_posts");
     if (storedPosts) {
       this.posts = JSON.parse(storedPosts);
+      Object.values(this.posts).forEach(post => {
+        post.createdDate = new Date(post.createdDate);
+        post.expirationDate = new Date(post.expirationDate);
+      });
     }
   }
 
