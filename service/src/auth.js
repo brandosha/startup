@@ -6,17 +6,14 @@ const utils = require('./utils');
 const { HttpError, validatedBody } = require('./utils');
 
 /**
- * @type {
- *   Object.<string, {
- *     passwordHash: string 
- *   }>} userData
+ * @type {Object.<string, { passwordHash: string }>}
  */
 const userData = {
   // username: { passwordHash }
 }
 
 /**
- * @type {Object.<string, string>} sessionData
+ * @type {Object.<string, string>}
  */
 const sessionData = {
   // token: username

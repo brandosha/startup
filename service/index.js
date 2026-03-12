@@ -26,6 +26,10 @@ apiRouter.post('/posts/create', posts.create);
 apiRouter.get('/posts/get', posts.get);
 apiRouter.get('/posts/all', posts.all);
 
+const comments = require('./src/comments');
+apiRouter.post('/comments/create', comments.create);
+apiRouter.get('/comments/get', comments.get);
+
 
 app.use((err, req, res, next) => {
   if (err instanceof HttpError) {

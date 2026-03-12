@@ -3,19 +3,17 @@ const utils = require('./utils');
 const z = require('zod');
 
 /**
- * @type {
- *   Object.<string, { 
- *     title: string,
- *     content: string,
- *     username: string,
- *     coordinates: { latitude: number, longitude: number },
- *     postId: string,
- *     createdDate: Date,
- *     expirationDate: Date
- *   }>
- * } postData
+ * @type {Object.<string, { 
+ *   title: string,
+ *   content: string,
+ *   username: string,
+ *   coordinates: { latitude: number, longitude: number },
+ *   postId: string,
+ *   createdDate: Date,
+ *   expirationDate: Date
+ * }>} postsData
  */
-const postData = {
+const postsData = {
   // postId: { title, content, username, coordinates: { latitude, longitude }, postId, createdDate, expirationDate }
 }
 
@@ -45,7 +43,7 @@ exports.create = async (req, res) => {
     expirationDate: new Date(expirationDate)
   }
 
-  postData[id] = post;
+  postsData[id] = post;
 
   res.send(post);
 }
@@ -58,7 +56,7 @@ exports.get = async (req, res) => {
     return;
   }
 
-  const post = postData[id];
+  const post = postsData[id];
   if (!post) {
     res.status(404).json({ message: 'Post not found' });
     return;
@@ -68,15 +66,15 @@ exports.get = async (req, res) => {
 }
 
 exports.all = async (req, res) => {
-  const allPosts = Object.values(postData);
+  const allPosts = Object.values(postsData);
   res.send(allPosts);
 }
 
 setInterval(() => {
   const now = new Date();
-  for (const id in postData) {
-    if (postData[id].expirationDate < now) {
-      delete postData[id];
+  for (const id in postsData) {
+    if (postsData[id].expirationDate < now) {
+      delete postsData[id];
     }
   }
 }, 60 * 1000); // Check every minute

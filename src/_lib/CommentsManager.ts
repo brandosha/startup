@@ -11,60 +11,57 @@ interface Comment {
 }
 
 class CommentsManager extends StateManager {
+
   private comments: { [postId: string]: Comment[] } = {};
 
-  constructor() {
-    super();
+  async create(comment: Omit<Comment, "username" | "createdDate">) {
+    const res = await auth.doFetch("/api/comments/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(comment),
+    });
 
-    const storedComments = localStorage.getItem("startup_comments");
-    if (storedComments) {
-      this.comments = JSON.parse(storedComments);
-      Object.values(this.comments).forEach(comments => {
-        comments.forEach(comment => {
-          comment.createdDate = new Date(comment.createdDate);
-        });
-      });
+    if (!res.ok) {
+      throw new Error("Failed to create comment");
     }
-  }
 
-  create(comment: Omit<Comment, "username" | "createdDate">) {
-    const user = auth.currentUser();
-    if (!user) {
-      throw new Error("User not authenticated");
-    }
-    
-    const newComment = {
-      ...comment,
-      username: user.username,
-      createdDate: new Date()
-    };
-
-    const { postId } = comment;
-    if (!this.comments[postId]) {
-      this.comments[postId] = [];
-    }
-    this.comments[postId].push(newComment);
+    const json = await res.json();
+    const newComment = this.commentFromJson(json);
+    this.insertComment(newComment);
     this.dispatchChange();
-
-    setTimeout(() => {
-      const responseComment = {
-        postId: newComment.postId,
-        username: "Responder",
-        content: `${newComment.username}, you said: "${newComment.content}"`,
-        createdDate: new Date()
-      };
-      this.comments[postId].push(responseComment);
-      this.dispatchChange();
-    }, 1500);
   }
 
   get(postId: string) {
+    if (this.comments[postId] == undefined) {
+      this.fetchComments(postId);
+    }
+
     return this.comments[postId]?.toReversed() || [];
   }
 
-  dispatchChange(): void {
-    super.dispatchChange();
-    localStorage.setItem("startup_comments", JSON.stringify(this.comments));
+  async fetchComments(postId: string) {
+    const res = await auth.doFetch("/api/comments/get?postId=" + postId);
+    const json = await res.json();
+    const comments = json.map((c: any) => this.commentFromJson(c));
+    this.comments[postId] = comments;
+    this.dispatchChange();
+  }
+
+  private commentFromJson(json: any): Comment {
+    return {
+      postId: json.postId,
+      username: json.username,
+      content: json.content,
+      createdDate: new Date(json.createdDate)
+    };
+  }
+
+  private insertComment(comment: Comment) {
+    if (!this.comments[comment.postId]) {
+      this.comments[comment.postId] = [];
+    }
+
+    this.comments[comment.postId].push(comment);
   }
 }
 
