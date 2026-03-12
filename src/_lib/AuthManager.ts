@@ -2,83 +2,94 @@ import { useEffect, useState } from "react";
 import { StateManager } from "./StateManager";
 
 export class AuthManager extends StateManager {
-  private users: { [username: string]: { password: string } } = {};
-  private sessions: { [token: string]: { username: string } } = {};
-  private curSession: string | null = null;
 
+  private curSession: string | null = null;
   private curUser: { username: string } | null = null;
 
   constructor() {
     super();
 
-    const storedUsers = localStorage.getItem("startup_users");
-    if (storedUsers) {
-      this.users = JSON.parse(storedUsers);
-    }
-
-    const storedSessions = localStorage.getItem("startup_sessions");
-    if (storedSessions) {
-      this.sessions = JSON.parse(storedSessions);
-    }
-
-    const storedCurSession = localStorage.getItem("startup_curSession");
-    this.curSession = storedCurSession;
+    this.curSession = localStorage.getItem("startup_curSession");
   }
 
   async register(username: string, password: string) {
-    if (this.users[username]) {
-      throw new Error("Username already exists");
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Registration failed");
     }
 
-    this.users[username] = { password };
+    const data = await res.json();
+    this.curUser = data.user;
+    this.curSession = data.authToken;
     this.dispatchChange();
   }
 
   async login(username: string, password: string) {
-    const user = this.users[username];
-    if (!user) {
-      throw new Error("User not found");
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Login failed");
     }
 
-    if (user.password !== password) {
-      throw new Error("Incorrect password");
-    }
-
-    const token = crypto.randomUUID();
-    this.sessions[token] = { username };
-    this.curSession = token;
-    this.curUser = { username };
+    const data = await res.json();
+    this.curUser = data.user;
+    this.curSession = data.authToken;
     this.dispatchChange();
   }
 
   async logout() {
-    if (!this.curSession) return;
+    const res = await fetch("/api/auth/logout", {
+      method: "DELETE",
+    });
 
-    delete this.sessions[this.curSession];
-    this.curSession = null;
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Logout failed");
+    }
+
     this.curUser = null;
     this.dispatchChange();
   }
 
   currentUser(): { username: string } | null {
-    if (this.curUser == null) {
+    if (this.curSession && this.curUser === null) {
       this.fetchCurrentUser();
     }
     return this.curUser;
   }
 
   async fetchCurrentUser() {
-    if (!this.curSession) return null;
+    if (!this.curSession) {
+      return null
+    }
 
-    const session = this.sessions[this.curSession];
-    if (!session) return null;
+    const res = await fetch("/api/auth/me", {
+      headers: { "Authorization": this.curSession },
+    });
 
-    const user = this.users[session.username];
-    if (!user) return null;
+    if (res.status === 401) {
+      this.curSession = null;
+      this.curUser = null;
+      this.dispatchChange();
+      return null;
+    } else if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Failed to fetch current user");
+    }
 
-    await new Promise(resolve => setTimeout(resolve, 500)); // simulate network delay
-
-    this.curUser = { username: session.username };
+    const user = await res.json();
+    this.curUser = user;
     this.dispatchChange();
 
     return this.curUser;
@@ -87,8 +98,6 @@ export class AuthManager extends StateManager {
 
   dispatchChange(): void {
     super.dispatchChange();
-    localStorage.setItem("startup_users", JSON.stringify(this.users));
-    localStorage.setItem("startup_sessions", JSON.stringify(this.sessions));
 
     if (this.curSession) {
       localStorage.setItem("startup_curSession", this.curSession);
