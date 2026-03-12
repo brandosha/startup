@@ -18,6 +18,11 @@ import { getIpLocation, storedMapRegion } from '../_lib/utils';
 export default function MapPage() {
   const posts = usePosts();
   const allPosts = posts.getAll();
+  console.log("All posts:", allPosts);
+
+  useEffect(() => {
+    posts.fetchAll().then(r => console.log("Fetched all posts", r))
+  }, [])
 
   const [searchParams, setSearchParams] = useSearchParams();
   const postId = searchParams.get("post");
@@ -106,7 +111,7 @@ export default function MapPage() {
     }
 
     return markers;
-  }, [newPostMarker]);
+  }, [allPosts, newPostMarker]);
 
   let sheetContent = <div>
     <IfAuth

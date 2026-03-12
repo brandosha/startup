@@ -71,6 +71,18 @@ export class AuthManager extends StateManager {
 
   async fetchCurrentUser() {
     if (!this.curSession) {
+      this.curUser = null;
+      this.dispatchChange();
+      return null;
+    }
+
+    const res = await this.doFetch("api/auth/me");
+    this.curUser = await res.json();
+    this.dispatchChange();
+    return this.curUser;
+
+
+    /*if (!this.curSession) {
       return null
     }
 
@@ -92,7 +104,30 @@ export class AuthManager extends StateManager {
     this.curUser = user;
     this.dispatchChange();
 
-    return this.curUser;
+    return this.curUser;*/
+  }
+
+  async doFetch(url: string, options: RequestInit = {}) {
+    if (!this.curSession) {
+      throw new Error("Not authenticated");
+    }
+
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        "Authorization": this.curSession,
+      },
+    });
+
+    if (res.status === 401) {
+      this.curSession = null;
+      this.curUser = null;
+      this.dispatchChange();
+      throw new Error("Not authenticated");
+    }
+
+    return res;
   }
 
 

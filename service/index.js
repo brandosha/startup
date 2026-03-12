@@ -21,6 +21,11 @@ apiRouter.post('/auth/login', auth.login);
 apiRouter.delete('/auth/logout', auth.logout);
 apiRouter.get('/auth/me', auth.me);
 
+const posts = require('./src/posts');
+apiRouter.post('/posts/create', posts.create);
+apiRouter.get('/posts/get', posts.get);
+apiRouter.get('/posts/all', posts.all);
+
 
 app.use((err, req, res, next) => {
   if (err instanceof HttpError) {

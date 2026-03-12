@@ -32,10 +32,10 @@ export default function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
     <IfAuth
       content={(auth) => (
         <div id="new-post">
-          <form onSubmit={(e) => {
+          <form onSubmit={async (e) => {
             e.preventDefault();
 
-            const newPost = posts.create({
+            const newPost = await posts.create({
               title,
               content,
               coordinates,
@@ -78,6 +78,7 @@ export default function NewPostForm({ coordinates, onPost }: NewPostFormProps) {
             <div className="mt-2 mb-4 d-flex flex-wrap gap-1">
               {expirationOptions.map(option => (
                 <button
+                  key={option.label}
                   type="button"
                   className="btn btn-outline-dark small"
                   onClick={() => setExpirationDate(new Date(Date.now() + option.value))}

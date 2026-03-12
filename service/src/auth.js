@@ -113,3 +113,12 @@ exports.me = async (req, res) => {
 
 exports.userData = userData;
 exports.sessionData = sessionData;
+
+exports.requireAuth = (authToken) => {
+  const username = sessionData[authToken];
+  if (!username) {
+    throw new HttpError(401, 'Not authenticated');
+  }
+
+  return username;
+}

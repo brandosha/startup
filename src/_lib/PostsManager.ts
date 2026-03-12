@@ -16,81 +16,93 @@ export interface Post {
   expirationDate: Date;
 }
 
-const testPosts: { [id: string]: Post } = {
-  '1': {
-    id: '1',
-    username: 'alice',
-    title: 'Lost Dog',
-    content: 'My dog ran away, last seen near the park.',
-    coordinates: {
-      latitude: 40.23,
-      longitude: -111.65,
-    },
-    createdDate: new Date(),
-    expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 24 hours
-  },
-  '2': {
-    id: '2',
-    username: 'bob',
-    title: 'Free Food',
-    content: 'Free pizza until 7pm',
-    coordinates: {
-      latitude: 40.26,
-      longitude: -111.64,
-    },
-    createdDate: new Date(),
-    expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 24 hours
-  }
-};
-
 class PostsManager extends StateManager {
-  private posts: { [id: string]: Post } = testPosts;
+  private posts: { [id: string]: Post | undefined } = {};
 
   constructor() {
     super();
-
-    const storedPosts = localStorage.getItem("startup_posts");
-    if (storedPosts) {
-      this.posts = JSON.parse(storedPosts);
-      Object.values(this.posts).forEach(post => {
-        post.createdDate = new Date(post.createdDate);
-        post.expirationDate = new Date(post.expirationDate);
-      });
-    }
   }
 
-  create(post: Omit<Post, "id" | "createdDate" | "username">) {
-    const user = auth.currentUser();
-    if (!user) {
-      throw new Error("User must be logged in to create a post");
+  async create(post: Omit<Post, "id" | "createdDate" | "username">) {
+    const res = await auth.doFetch("/api/posts/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(post),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Failed to create post");
     }
 
-    const id = post.title.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).slice(2, 9);
-    const createdDate = new Date();
-    const newPost = {
-      ...post,
-      id,
-      username: user.username,
-      createdDate,
-    };
-
-    this.posts[id] = newPost;
+    const json = await res.json();
+    const newPost = this.postFromJson(json);
+    this.posts[newPost.id] = newPost;
     this.dispatchChange();
 
     return newPost;
   }
 
   get(id: string) {
-    return this.posts[id];
+    if (!this.posts[id]) {
+      this.fetchPost(id);
+    }
+
+    return this.posts[id]
+  }
+
+  async fetchPost(id: string) {
+    const res = await auth.doFetch(`/api/posts/get?id=${id}`);
+    if (res.status === 404) {
+      delete this.posts[id];
+      this.dispatchChange();
+      return null;
+    } else if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Failed to fetch post");
+    }
+
+    const json = await res.json();
+    const post = this.postFromJson(json);
+    this.posts[post.id] = post;
+    this.dispatchChange();
+
+    return post;
   }
 
   getAll() {
-    return Object.values(this.posts);
+    return Object.values(this.posts).filter(post => post !== undefined);
   }
 
-  dispatchChange(): void {
-    super.dispatchChange();
-    localStorage.setItem("startup_posts", JSON.stringify(this.posts));
+  async fetchAll() {
+    const res = await auth.doFetch("/api/posts/all");
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Failed to fetch posts");
+    }
+
+    const json = await res.json();
+    json.forEach((p: any) => {
+      this.posts[p.id] = this.postFromJson(p);
+    });
+    this.dispatchChange();
+
+    return this.getAll();
+  }
+
+  private postFromJson(json: any): Post {
+    return {
+      id: json.id,
+      username: json.username,
+      title: json.title,
+      content: json.content,
+      coordinates: {
+        latitude: json.coordinates.latitude,
+        longitude: json.coordinates.longitude,
+      },
+      createdDate: new Date(json.createdDate),
+      expirationDate: new Date(json.expirationDate),
+    };
   }
 }
 
