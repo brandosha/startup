@@ -49,7 +49,7 @@ export class AuthManager extends StateManager {
   }
 
   async logout() {
-    const res = await fetch("/api/auth/logout", {
+    const res = await this.doFetch("/api/auth/logout", {
       method: "DELETE",
     });
 
@@ -59,6 +59,7 @@ export class AuthManager extends StateManager {
     }
 
     this.curUser = null;
+    this.curSession = null;
     this.dispatchChange();
   }
 
@@ -80,31 +81,6 @@ export class AuthManager extends StateManager {
     this.curUser = await res.json();
     this.dispatchChange();
     return this.curUser;
-
-
-    /*if (!this.curSession) {
-      return null
-    }
-
-    const res = await fetch("/api/auth/me", {
-      headers: { "Authorization": this.curSession },
-    });
-
-    if (res.status === 401) {
-      this.curSession = null;
-      this.curUser = null;
-      this.dispatchChange();
-      return null;
-    } else if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Failed to fetch current user");
-    }
-
-    const user = await res.json();
-    this.curUser = user;
-    this.dispatchChange();
-
-    return this.curUser;*/
   }
 
   async doFetch(url: string, options: RequestInit = {}) {

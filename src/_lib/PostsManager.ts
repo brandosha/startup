@@ -52,7 +52,7 @@ class PostsManager extends StateManager {
   }
 
   async fetchPost(id: string) {
-    const res = await auth.doFetch(`/api/posts/get?id=${id}`);
+    const res = await fetch(`/api/posts/get?id=${id}`);
     if (res.status === 404) {
       delete this.posts[id];
       this.dispatchChange();
@@ -75,7 +75,7 @@ class PostsManager extends StateManager {
   }
 
   async fetchAll() {
-    const res = await auth.doFetch("/api/posts/all");
+    const res = await fetch("/api/posts/all");
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.message || "Failed to fetch posts");

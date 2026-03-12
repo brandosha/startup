@@ -93,7 +93,7 @@ exports.login = async (req, res) => {
 }
 
 exports.logout = async (req, res) => {
-  const authToken = req.cookies[SESSION_COOKIE];
+  const authToken = req.headers['authorization'];
   sessionData[authToken] = null;
   res.clearCookie(SESSION_COOKIE);
   res.send({});
