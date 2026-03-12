@@ -1,6 +1,9 @@
+const z = require('zod');
+
 const auth = require('./auth');
 const utils = require('./utils');
-const z = require('zod');
+const { HttpError, validatedBody } = utils;
+
 
 /**
  * @type {Object.<string, { 
@@ -28,7 +31,7 @@ const createSchema = z.object({
 });
 /** @type { utils.RequestHandler } */
 exports.create = async (req, res) => {
-  const { title, content, coordinates, expirationDate } = utils.validatedBody(req.body, createSchema);
+  const { title, content, coordinates, expirationDate } = validatedBody(req.body, createSchema);
 
   const username = auth.requireAuth(req.headers['authorization']);
   const id = title.toLowerCase().replace(/\s+/g, '-').slice(0, 30) + '-' + Math.random().toString(36).slice(2, 9);
@@ -52,13 +55,12 @@ exports.create = async (req, res) => {
 exports.get = async (req, res) => {
   const { id } = req.query;
   if (typeof id !== 'string') {
-    res.status(400).json({ message: 'Invalid post ID' });
-    return;
+    throw new HttpError(400, 'Invalid post ID');
   }
 
   const post = postsData[id];
   if (!post) {
-    res.status(404).json({ message: 'Post not found' });
+    throw new HttpError(404, 'Post not found');
     return;
   }
 

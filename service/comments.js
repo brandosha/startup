@@ -1,6 +1,8 @@
+const z = require('zod');
+
 const auth = require('./auth');
 const utils = require('./utils');
-const z = require('zod');
+const { HttpError, validatedBody } = utils;
 
 /**
  * @type {Object<string, Array<{
@@ -20,7 +22,7 @@ const createSchema = z.object({
 });
 /** @type { utils.RequestHandler } */
 exports.create = (req, res) => {
-  const { postId, content } = utils.validatedBody(req.body, createSchema);
+  const { postId, content } = validatedBody(req.body, createSchema);
 
   const username = auth.requireAuth(req.headers['authorization']);
   const comment = {
@@ -42,8 +44,7 @@ exports.create = (req, res) => {
 exports.get = (req, res) => {
   const { postId } = req.query;
   if (typeof postId !== 'string') {
-    res.status(400).json({ message: 'Invalid post ID' });
-    return;
+    throw new HttpError(400, 'Invalid post ID');
   }
 
   res.send(commentsData[postId] || []);

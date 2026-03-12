@@ -17,7 +17,7 @@ export interface Post {
 }
 
 class PostsManager extends StateManager {
-  private posts: { [id: string]: Post | undefined } = {};
+  private posts: { [id: string]: Post | null } = {};
 
   constructor() {
     super();
@@ -44,7 +44,7 @@ class PostsManager extends StateManager {
   }
 
   get(id: string) {
-    if (!this.posts[id]) {
+    if (!this.posts.hasOwnProperty(id)) {
       this.fetchPost(id);
     }
 
@@ -54,7 +54,7 @@ class PostsManager extends StateManager {
   async fetchPost(id: string) {
     const res = await fetch(`/api/posts/get?id=${id}`);
     if (res.status === 404) {
-      delete this.posts[id];
+      this.posts[id] = null;
       this.dispatchChange();
       return null;
     } else if (!res.ok) {
@@ -71,7 +71,7 @@ class PostsManager extends StateManager {
   }
 
   getAll() {
-    return Object.values(this.posts).filter(post => post !== undefined);
+    return Object.values(this.posts).filter(post => post != null);
   }
 
   async fetchAll() {

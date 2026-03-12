@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const z = require('zod');
 
 const utils = require('./utils');
-const { HttpError, validatedBody } = require('./utils');
+const { HttpError, validatedBody } = utils;
 
 /**
  * @type {Object.<string, { passwordHash: string }>}

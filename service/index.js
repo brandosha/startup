@@ -1,6 +1,6 @@
 const cookieParser = require('cookie-parser');
 const express = require('express');
-const { HttpError } = require('./src/utils');
+const { HttpError } = require('./utils');
 
 const app = express();
 app.use(express.json());
@@ -15,18 +15,18 @@ app.listen(port, () => {
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
-const auth = require('./src/auth');
+const auth = require('./auth');
 apiRouter.post('/auth/register', auth.register);
 apiRouter.post('/auth/login', auth.login);
 apiRouter.delete('/auth/logout', auth.logout);
 apiRouter.get('/auth/me', auth.me);
 
-const posts = require('./src/posts');
+const posts = require('./posts');
 apiRouter.post('/posts/create', posts.create);
 apiRouter.get('/posts/get', posts.get);
 apiRouter.get('/posts/all', posts.all);
 
-const comments = require('./src/comments');
+const comments = require('./comments');
 apiRouter.post('/comments/create', comments.create);
 apiRouter.get('/comments/get', comments.get);
 
