@@ -132,7 +132,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [x] **Node.js/Express HTTP service**
 - [x] **Static middleware for frontend**
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
+- [x] **Calls to third party endpoints** - The frontend calls a backend endpoint that calls the third party so as not to expose the API key in the frontend code.
 - [x] **Backend service endpoints** - Various endpoints for authentication, posts, and comments.
 - [x] **Frontend calls service endpoints**
 - [x] **Supports registration, login, logout, and restricted endpoint** - Login is required to create posts or comment.

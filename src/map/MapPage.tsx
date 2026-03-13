@@ -38,25 +38,29 @@ export default function MapPage() {
       longitudeDelta: 0.05,
     },
   });
+  console.log("Map region:", mapRegion);
 
   useEffect(() => {
     getIpLocation().then((loc) => {
+      const pos = {
+        latitude: +loc.latitude,
+        longitude: +loc.longitude,
+      }
+
       const dist = Math.sqrt(
-        Math.pow(loc.latitude - mapRegion.center.latitude, 2) +
-        Math.pow(loc.longitude - mapRegion.center.longitude, 2)
+        Math.pow(pos.latitude - mapRegion.center.latitude, 2) +
+        Math.pow(pos.longitude - mapRegion.center.longitude, 2)
       );
 
       // If the user's location is close to the current map center, don't recenter the map.
       if (dist < 5) return;
 
-      centerMapOnPoint({
-        latitude: loc.latitude,
-        longitude: loc.longitude,
-      }, 2.5);
+      centerMapOnPoint(pos, 2.5);
     })
   }, []);
 
   const centerMapOnPoint = (coordinate: { latitude: number; longitude: number }, zoom = 0.02) => {
+    console.log("Centering map on coordinate:", coordinate, "with zoom:", zoom);
     const region = {
       center: {
         latitude: coordinate.latitude - (zoom * 0.3), // adjust center to account for bottom sheet

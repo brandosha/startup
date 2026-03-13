@@ -1,4 +1,12 @@
 export async function getIpLocation() {
+  const ipResponse = await fetch('https://api.ipify.org?format=json');
+  const { ip } = await ipResponse.json();
+
+  const res = await fetch("/api/ipinfo?ip=" + ip);
+  const json = await res.json();
+  console.log("IP Location:", json);
+  return json;
+
   return {
     "ip":"128.187.16.184",
     "continent_code":"NA",

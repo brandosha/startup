@@ -31,6 +31,29 @@ apiRouter.post('/comments/create', comments.create);
 apiRouter.get('/comments/get', comments.get);
 
 
+const { IPGEOLOCATION_API_KEY } = require('./secrets');
+const ipinfoCache = new Map();
+apiRouter.get('/ipinfo', async (req, res) => {
+  const ip = req.query.ip;
+  if (typeof ip !== 'string') {
+    throw new HttpError(500, 'Failed to fetch IP info');
+  }
+
+  if (ipinfoCache.has(ip)) {
+    return res.json(ipinfoCache.get(ip));
+  }
+
+  const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${IPGEOLOCATION_API_KEY}&ip=${ip}`);
+  if (!response.ok) {
+    console.error(response.statusText, await response.json());
+    throw new HttpError(500, 'Failed to fetch IP info');
+  }
+  const data = await response.json();
+  ipinfoCache.set(ip, data);
+  res.json(data);
+});
+
+
 app.use((err, req, res, next) => {
   if (err instanceof HttpError) {
     res.status(err.statusCode).json({
