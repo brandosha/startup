@@ -1,6 +1,7 @@
 const z = require('zod');
 
 const auth = require('./auth');
+const comments = require('./comments');
 const utils = require('./utils');
 const { HttpError, validatedBody } = utils;
 
@@ -77,6 +78,7 @@ setInterval(() => {
   for (const id in postsData) {
     if (postsData[id].expirationDate < now) {
       delete postsData[id];
+      delete comments.commentsData[id];
     }
   }
 }, 60 * 1000); // Check every minute

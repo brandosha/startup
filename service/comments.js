@@ -49,3 +49,5 @@ exports.get = (req, res) => {
 
   res.send(commentsData[postId] || []);
 }
+
+exports.commentsData = commentsData;

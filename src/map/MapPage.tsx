@@ -18,7 +18,6 @@ import { getIpLocation, storedMapRegion } from '../_lib/utils';
 export default function MapPage() {
   const posts = usePosts();
   const allPosts = posts.getAll();
-  console.log("All posts:", allPosts);
 
   useEffect(() => {
     posts.fetchAll().then(r => console.log("Fetched all posts", r))
@@ -38,7 +37,6 @@ export default function MapPage() {
       longitudeDelta: 0.05,
     },
   });
-  console.log("Map region:", mapRegion);
 
   useEffect(() => {
     getIpLocation().then((loc) => {
@@ -60,7 +58,6 @@ export default function MapPage() {
   }, []);
 
   const centerMapOnPoint = (coordinate: { latitude: number; longitude: number }, zoom = 0.02) => {
-    console.log("Centering map on coordinate:", coordinate, "with zoom:", zoom);
     const region = {
       center: {
         latitude: coordinate.latitude - (zoom * 0.3), // adjust center to account for bottom sheet

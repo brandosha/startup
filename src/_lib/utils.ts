@@ -4,7 +4,6 @@ export async function getIpLocation() {
 
   const res = await fetch("/api/ipinfo?ip=" + ip);
   const json = await res.json();
-  console.log("IP Location:", json);
   return json;
 
   return {
