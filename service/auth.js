@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const z = require('zod');
 
+const db = require('./database');
 const utils = require('./utils');
 const { HttpError, validatedBody } = utils;
 
