@@ -65,8 +65,12 @@ module.exports = {
     all() {
       return collections.posts.find().toArray();
     },
-    deleteExpired() {
-      return collections.posts.deleteMany({ expirationDate: { $lte: new Date() } });
+    async deleteExpired() {
+      const cursor = collections.posts.find({ expirationDate: { $lte: new Date() } });
+      for await (const post of cursor) {
+        await collections.posts.deleteOne({ _id: post._id });
+        await collections.comments.deleteMany({ postId: post._id });
+      }
     }
   },
   comments: {
