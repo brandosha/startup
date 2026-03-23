@@ -1,25 +1,9 @@
 const z = require('zod');
 
 const auth = require('./auth');
-const comments = require('./comments');
+const db = require('./database');
 const utils = require('./utils');
 const { HttpError, validatedBody } = utils;
-
-
-/**
- * @type {Object.<string, { 
- *   title: string,
- *   content: string,
- *   username: string,
- *   coordinates: { latitude: number, longitude: number },
- *   postId: string,
- *   createdDate: Date,
- *   expirationDate: Date
- * }>} postsData
- */
-const postsData = {
-  // postId: { title, content, username, coordinates: { latitude, longitude }, postId, createdDate, expirationDate }
-}
 
 const createSchema = z.object({
   title: z.string(),
@@ -47,7 +31,7 @@ exports.create = async (req, res) => {
     expirationDate: new Date(expirationDate)
   }
 
-  postsData[id] = post;
+  await db.posts.insert(post);
 
   res.send(post);
 }
@@ -59,26 +43,17 @@ exports.get = async (req, res) => {
     throw new HttpError(400, 'Invalid post ID');
   }
 
-  const post = postsData[id];
+  const post = await db.posts.get(id);
   if (!post) {
     throw new HttpError(404, 'Post not found');
-    return;
   }
 
   res.send(post);
 }
 
 exports.all = async (req, res) => {
-  const allPosts = Object.values(postsData);
+  const allPosts = await db.posts.all();
   res.send(allPosts);
 }
 
-setInterval(() => {
-  const now = new Date();
-  for (const id in postsData) {
-    if (postsData[id].expirationDate < now) {
-      delete postsData[id];
-      delete comments.commentsData[id];
-    }
-  }
-}, 60 * 1000); // Check every minute
+setInterval(() => db.posts.deleteExpired(), 60 * 1000); // Check every minute

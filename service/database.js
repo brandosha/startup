@@ -32,7 +32,7 @@ const collections = {
 module.exports = {
   users: {
     get(username) {
-      return collections.users.findOne({ username: username });
+      return collections.users.findOne({ _id: username });
     },
     insert(user) {
       return collections.users.insertOne({
@@ -51,5 +51,22 @@ module.exports = {
     delete(token) {
       return collections.sessions.deleteOne({ token: token });
     }
-  }
+  },
+  posts: {
+    get(postId) {
+      return collections.posts.findOne({ _id: postId });
+    },
+    insert(post) {
+      return collections.posts.insertOne({
+        _id: post.id,
+        ...post
+      });
+    },
+    all() {
+      return collections.posts.find().toArray();
+    },
+    deleteExpired() {
+      return collections.posts.deleteMany({ expirationDate: { $lte: new Date() } });
+    }
+  },
 };

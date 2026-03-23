@@ -6,20 +6,6 @@ const db = require('./database');
 const utils = require('./utils');
 const { HttpError, validatedBody } = utils;
 
-/**
- * @type {Object.<string, { passwordHash: string }>}
- */
-const userData = {
-  // username: { passwordHash }
-}
-
-/**
- * @type {Object.<string, string>}
- */
-const sessionData = {
-  // token: username
-}
-
 const SESSION_COOKIE = 'session';
 const setNewAuthCookie = (res, username) => new Promise((resolve, reject) => {
   crypto.randomBytes(16, async (err, buffer) => {
@@ -109,9 +95,6 @@ exports.me = async (req, res) => {
 
   res.send({ username });
 }
-
-exports.userData = userData;
-exports.sessionData = sessionData;
 
 exports.requireAuth = async (authToken) => {
   const session = await db.sessions.get(authToken);
