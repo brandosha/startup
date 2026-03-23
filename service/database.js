@@ -69,4 +69,12 @@ module.exports = {
       return collections.posts.deleteMany({ expirationDate: { $lte: new Date() } });
     }
   },
+  comments: {
+    get(postId) {
+      return collections.comments.find({ postId }).toArray();
+    },
+    insert(comment) {
+      return collections.comments.insertOne(comment);
+    }
+  }
 };
