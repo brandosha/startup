@@ -22,7 +22,7 @@ const sessionData = {
 
 const SESSION_COOKIE = 'session';
 const setNewAuthCookie = (res, username) => new Promise((resolve, reject) => {
-  crypto.randomBytes(16, (err, buffer) => {
+  crypto.randomBytes(16, async (err, buffer) => {
     if (err) {
       console.error('Error generating token:', err);
       reject(new HttpError(500, 'Internal Server Error'));
@@ -30,7 +30,7 @@ const setNewAuthCookie = (res, username) => new Promise((resolve, reject) => {
     }
 
     const authToken = buffer.toString('base64');
-    sessionData[authToken] = username;
+    await db.sessions.insert({ token: authToken, username });
     res.cookie(SESSION_COOKIE, authToken, {
       maxAge: 1000 * 60 * 60 * 24 * 365,
       secure: true,
@@ -50,12 +50,12 @@ const registerSchema = z.object({
 exports.register = async (req, res) => {
   const { username, password } = validatedBody(req.body, registerSchema);
 
-  if (userData[username]) {
+  if (await db.users.get(username)) {
     throw new HttpError(409, 'Username is taken');
   }
 
   const passwordHash = await bcrypt.hash(password, bcrypt.genSaltSync(10));
-  userData[username] = { passwordHash };
+  await db.users.insert({ username, passwordHash });
 
   const authToken = await setNewAuthCookie(res, username);
   res.send({
@@ -73,7 +73,7 @@ const loginSchema = z.object({
 exports.login = async (req, res) => {
   const { username, password } = validatedBody(req.body, loginSchema);
 
-  const user = userData[username];
+  const user = await db.users.get(username);
   if (!user) {
     throw new HttpError(401, 'Invalid username or password');
   }
@@ -92,7 +92,7 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   const authToken = req.headers['authorization'];
-  sessionData[authToken] = null;
+  await db.sessions.delete(authToken);
   res.clearCookie(SESSION_COOKIE);
   res.send({});
 }
@@ -101,7 +101,8 @@ exports.logout = async (req, res) => {
 exports.me = async (req, res) => {
   const authToken = req.headers['authorization'];
   // const { authToken } = validatedBody(req.body, meSchema);
-  const username = sessionData[authToken];
+  const session = await db.sessions.get(authToken);
+  const username = session?.username;
   if (!username) {
     throw new HttpError(401, 'Not authenticated');
   }
@@ -112,8 +113,9 @@ exports.me = async (req, res) => {
 exports.userData = userData;
 exports.sessionData = sessionData;
 
-exports.requireAuth = (authToken) => {
-  const username = sessionData[authToken];
+exports.requireAuth = async (authToken) => {
+  const session = await db.sessions.get(authToken);
+  const username = session?.username;
   if (!username) {
     throw new HttpError(401, 'Not authenticated');
   }

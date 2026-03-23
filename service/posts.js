@@ -34,7 +34,7 @@ const createSchema = z.object({
 exports.create = async (req, res) => {
   const { title, content, coordinates, expirationDate } = validatedBody(req.body, createSchema);
 
-  const username = auth.requireAuth(req.headers['authorization']);
+  const username = await auth.requireAuth(req.headers['authorization']);
   const id = title.toLowerCase().replace(/\s+/g, '-').slice(0, 30) + '-' + Math.random().toString(36).slice(2, 9);
 
   const post = {

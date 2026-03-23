@@ -21,10 +21,10 @@ const createSchema = z.object({
   content: z.string()
 });
 /** @type { utils.RequestHandler } */
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   const { postId, content } = validatedBody(req.body, createSchema);
 
-  const username = auth.requireAuth(req.headers['authorization']);
+  const username = await auth.requireAuth(req.headers['authorization']);
   const comment = {
     postId,
     username,

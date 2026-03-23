@@ -10,9 +10,10 @@ const client = new MongoClient(MONGODB_CONNECTION_URI, {
   }
 });
 
-const db = client.db('simon');
+const db = client.db('neighborhood');
 const collections = {
   users: db.collection('users'),
+  sessions: db.collection('sessions'),
   posts: db.collection('posts'),
   comments: db.collection('comments'),
 };
@@ -28,11 +29,27 @@ const collections = {
   }
 })();
 
-
-function insertUser(user) {
-  return collections.users.insertOne(user);
-}
-
 module.exports = {
-  insertUser,
+  users: {
+    get(username) {
+      return collections.users.findOne({ username: username });
+    },
+    insert(user) {
+      return collections.users.insertOne({
+        _id: user.username,
+        ...user
+      });
+    }
+  },
+  sessions: {
+    get(token) {
+      return collections.sessions.findOne({ token: token });
+    },
+    insert(session) {
+      return collections.sessions.insertOne(session);
+    },
+    delete(token) {
+      return collections.sessions.deleteOne({ token: token });
+    }
+  }
 };
