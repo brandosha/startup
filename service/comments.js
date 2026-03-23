@@ -14,6 +14,11 @@ exports.create = async (req, res) => {
   const { postId, content } = validatedBody(req.body, createSchema);
 
   const username = await auth.requireAuth(req.headers['authorization']);
+  const post = await db.posts.get(postId);
+  if (!post || post.expirationDate < new Date()) {
+    throw new HttpError(404, 'Post not found');
+  }
+
   const comment = {
     postId,
     username,
