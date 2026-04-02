@@ -149,8 +149,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - WebSocket server manages clients and enables subscribing to broadcast channels.
+- [x] **Frontend makes WebSocket connection** - Custom `RobustWebsocket` class handles reconnection logic and `ServerEvents` manages subscribing to broadcast channels.
+- [x] **Data sent over WebSocket connection** - Server broadcasts new posts and comments to subscribed clients.
+- [x] **WebSocket data displayed** - Frontend updates the map, posts, and comments in real-time. This is made easy by the custom `StateManager` hooks.
+- [x] **Application is fully functional** - All of the app features work and are updated in real time.
