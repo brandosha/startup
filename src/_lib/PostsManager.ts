@@ -23,7 +23,11 @@ class PostsManager extends StateManager {
   constructor() {
     super();
 
-    serverEvents.subscribeNewPosts();
+    serverEvents.subscribeNewPosts(post => {
+      console.log("Received new post from server event:", post);
+      this.posts[post.id] = this.postFromJson(post);
+      this.dispatchChange();
+    });
   }
 
   async create(post: Omit<Post, "id" | "createdDate" | "username">) {

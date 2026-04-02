@@ -34,17 +34,7 @@ wss.on('connection', (ws) => {
     } catch (error) {
       console.error('Error parsing message:', error);
     }
-
-    ws.send(JSON.stringify({
-      type: 'echo',
-      payload: msg,
-    }));
   });
-
-  ws.send(JSON.stringify({
-    type: 'welcome',
-    payload: 'Welcome to the WebSocket server!',
-  }));
 
   ws.on('close', () => {
     delete clients[id];
