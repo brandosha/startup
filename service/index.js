@@ -73,3 +73,5 @@ app.use((err, req, res, next) => {
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
+
+require('./websocket');

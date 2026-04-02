@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { StateManager } from "./StateManager";
 
+import { serverEvents } from "./ServerEvents";
 import { auth } from "./AuthManager";
 
 export interface Post {
@@ -21,6 +22,8 @@ class PostsManager extends StateManager {
 
   constructor() {
     super();
+
+    serverEvents.subscribeNewPosts();
   }
 
   async create(post: Omit<Post, "id" | "createdDate" | "username">) {

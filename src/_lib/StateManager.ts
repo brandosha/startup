@@ -1,4 +1,4 @@
-type Unsubscribe = () => void;
+import { Unsubscribe } from "./utils";
 
 export class StateManager {
   private _dispatchers: (() => void)[] = [];

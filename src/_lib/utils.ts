@@ -1,3 +1,5 @@
+export type Unsubscribe = () => void;
+
 export async function getIpLocation() {
   const ipResponse = await fetch('https://api.ipify.org?format=json');
   const { ip } = await ipResponse.json();
