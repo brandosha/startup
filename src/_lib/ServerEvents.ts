@@ -39,6 +39,10 @@ class ServerEvents {
       listener(data);
     });
   }
+
+  subscribeComments(postId: string, listener: (data: any) => void): Unsubscribe {
+    return this.listenToChannel(`${postId}/comments`, listener);
+  }
 }
 
 export const serverEvents = new ServerEvents();

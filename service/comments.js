@@ -3,6 +3,7 @@ const z = require('zod');
 const auth = require('./auth');
 const db = require('./database');
 const utils = require('./utils');
+const { broadcast } = require('./websocket');
 const { HttpError, validatedBody } = utils;
 
 const createSchema = z.object({
@@ -28,6 +29,8 @@ exports.create = async (req, res) => {
 
   await db.comments.insert(comment);
   res.send(comment);
+
+  broadcast(postId + '/comments', comment);
 }
 
 /** @type { utils.RequestHandler } */

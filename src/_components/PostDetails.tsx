@@ -1,6 +1,6 @@
 import { Post } from "../_lib/PostsManager";
 import { useComments } from "../_lib/CommentsManager";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IfAuth from "./IfAuth";
 import UsernameBadge from "./UsernameBadge";
 
@@ -9,6 +9,11 @@ export default function PostDetails({ post }: { post: Post}) {
   const postComments = comments.get(post.id);
 
   const [newComment, setNewComment] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = comments.subscribe(post.id);
+    return () => unsubscribe();
+  }, [post.id]);
 
   return (
     <div className="nearby-post">

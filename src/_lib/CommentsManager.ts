@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { StateManager } from "./StateManager";
 import { auth } from "./AuthManager";
+import { Unsubscribe } from "./utils";
+import { serverEvents } from "./ServerEvents";
 
 
 interface Comment {
@@ -13,6 +15,7 @@ interface Comment {
 class CommentsManager extends StateManager {
 
   private comments: { [postId: string]: Comment[] } = {};
+  private commentIndices: { [commentId: string]: number } = {};
 
   async create(comment: Omit<Comment, "username" | "createdDate">) {
     const res = await auth.doFetch("/api/comments/create", {
@@ -39,6 +42,14 @@ class CommentsManager extends StateManager {
     return this.comments[postId]?.toReversed() || [];
   }
 
+  subscribe(postId: string): Unsubscribe {
+    return serverEvents.subscribeComments(postId, (comment) => {
+      console.log(`Received new comment for post ${postId} from server event:`, comment);
+      this.insertComment(this.commentFromJson(comment));
+      this.dispatchChange();
+    });
+  }
+
   async fetchComments(postId: string) {
     const res = await auth.doFetch("/api/comments/get?postId=" + postId);
     const json = await res.json();
@@ -60,8 +71,16 @@ class CommentsManager extends StateManager {
     if (!this.comments[comment.postId]) {
       this.comments[comment.postId] = [];
     }
+    const postComments = this.comments[comment.postId];
 
-    this.comments[comment.postId].push(comment);
+    const commentId = `${comment.postId}_${comment.username}_${comment.createdDate.getTime()}`;
+    const idx = this.commentIndices[commentId];
+    if (idx === undefined) {
+      postComments.push(comment);
+      this.commentIndices[commentId] = postComments.length - 1;
+    } else {
+      postComments[idx] = comment;
+    }
   }
 }
 
