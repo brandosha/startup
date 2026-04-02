@@ -30,6 +30,9 @@ class ServerEvents {
 
     return () => {
       this.listeners[channel] = this.listeners[channel].filter((l) => l !== listener);
+      if (this.listeners[channel].length === 0) {
+        this.ws.send({ type: "unsubscribe", channel });
+      }
     };
   }
 
