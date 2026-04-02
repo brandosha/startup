@@ -11,6 +11,7 @@ export default function PostDetails({ post }: { post: Post}) {
   const [newComment, setNewComment] = useState("");
 
   useEffect(() => {
+    comments.fetchComments(post.id);
     const unsubscribe = comments.subscribe(post.id);
     return () => unsubscribe();
   }, [post.id]);
