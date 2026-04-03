@@ -8,7 +8,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-app.listen(port, () => {
+const httpServer = app.listen(port, () => {
   console.log(`Service listening on port ${port}`);
 });
 
@@ -74,4 +74,5 @@ app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-require('./websocket');
+const { initWsServer } = require('./websocket');
+initWsServer(httpServer);

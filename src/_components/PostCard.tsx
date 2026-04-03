@@ -12,7 +12,6 @@ export default function PostCard({ post }: { post: Post}) {
     <a href={postUrl} className="link-underline-opacity-0 link-body-emphasis" onClick={(e) => {
       e.preventDefault();
       
-      console.log(location);
       if (location.pathname === '/map') {
         setSearchParams({ post: post.id });
       } else {
